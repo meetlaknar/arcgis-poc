@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>Intro to layers | Sample | ArcGIS API for JavaScript 4.17</title>
+
+    <link
+      rel="stylesheet"
+      href="https://js.arcgis.com/4.17/esri/themes/light/main.css"
+    />
+    <script src="https://js.arcgis.com/4.17/"></script>
+
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+      #layerToggle {
+        top: 20px;
+        right: 20px;
+        position: absolute;
+        z-index: 99;
+        background-color: white;
+        border-radius: 8px;
+        padding: 10px;
+        opacity: 0.75;
+      }
+    </style>
+
+    <script>
+      require([
+        "esri/Map",
+        "esri/Basemap",
+        "esri/views/MapView",
+        "esri/layers/TileLayer",
+        "esri/geometry/Point",
+      ], function (Map, Basemap, MapView, TileLayer, Point) {
+        center = [229074.892, 394335.42];
+
+        const qatarSatelliteTileLayer = new TileLayer({
+          url:
+            "https://services.gisqatar.org.qa/server/rest/services/Imagery/QatarSatelitte/MapServer",
+        });
+
+        var customBaseMap = new Basemap({
+          baseLayers: [qatarSatelliteTileLayer],
+          title: "Vector",
+          id: "myBasemap",
+        });
+
+        const pt = new Point({
+          x: center[0],
+          y: center[1],
+          spatialReference: {
+            wkid: 2932,
+          },
+        });
+
+        var map = new Map({
+          basemap: customBaseMap
+        });
+
+        var view = new MapView({
+          map: map,
+          container: "viewDiv",
+          center: pt,
+          zoom: 1,
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+    <!-- <span id="layerToggle" class="esri-widget">
+      <input type="checkbox" id="streetsLayer" /> Transportation
+    </span> -->
+  </body>
+</html>
