@@ -41,9 +41,11 @@
         "esri/Map",
         "esri/Basemap",
         "esri/views/MapView",
+        "esri/layers/Layer",
         "esri/layers/TileLayer",
+        "esri/layers/FeatureLayer",
         "esri/geometry/Point",
-      ], function (Map, Basemap, MapView, TileLayer, Point) {
+      ], function (Map, Basemap, MapView, Layer, TileLayer, FeatureLayer, Point) {
         center = [229074.892, 394335.42];
 
         const qatarSatelliteTileLayer = new TileLayer({
@@ -75,14 +77,28 @@
           center: pt,
           zoom: 1,
         });
+
+        // Layers
+        // Qatar Zones Layer
+        var layers = [];
+        var qZonesLayer = new FeatureLayer({
+            url: "https://services.gisqatar.org.qa/server/rest/services/Vector/ZonesAr/MapServer",
+            visible: true
+        });
+        layers.push(qZonesLayer);
+
+        var qMunicipalityLayer = new FeatureLayer({
+            url: "https://services.gisqatar.org.qa/server/rest/services/Vector/MunicipalityA/MapServer",
+            visible: true
+        });
+        layers.push(qMunicipalityLayer);
+
+        map.addMany(layers);
       });
     </script>
   </head>
 
   <body>
     <div id="viewDiv"></div>
-    <!-- <span id="layerToggle" class="esri-widget">
-      <input type="checkbox" id="streetsLayer" /> Transportation
-    </span> -->
   </body>
 </html>
